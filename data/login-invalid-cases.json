@@ -1,0 +1,12 @@
+[
+  {
+    "email": "not-an-email",
+    "password": "ValidPass123",
+    "expectedMessage": "Please enter a valid email address"
+  },
+  {
+    "email": "qa@example.com",
+    "password": "short",
+    "expectedMessage": "Please enter at least 8 characters"
+  }
+]

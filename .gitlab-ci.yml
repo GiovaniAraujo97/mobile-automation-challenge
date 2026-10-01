@@ -1,0 +1,55 @@
+stages:
+  - mobile-test
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH'
+
+android:e2e:
+  stage: mobile-test
+  tags:
+    - mobile-android
+  before_script:
+    - npm ci
+    - npm run apps:download
+    - npx appium driver install uiautomator2
+    - adb wait-for-device
+    - appium --address 127.0.0.1 --port 4723 > appium.log 2>&1 &
+    - for attempt in $(seq 1 30); do curl --fail --silent http://127.0.0.1:4723/status && break || sleep 2; done
+  script:
+    - PLATFORM=android npm run test:android
+  after_script:
+    - if [ -d allure-results ]; then npm run report:allure || true; fi
+  artifacts:
+    when: always
+    expire_in: 14 days
+    paths:
+      - allure-results/
+      - allure-report/
+      - artifacts/screenshots/
+      - appium.log
+
+ios:e2e:
+  stage: mobile-test
+  tags:
+    - mobile-macos
+  before_script:
+    - npm ci
+    - npm run apps:download
+    - npx appium driver install xcuitest
+    - xcrun simctl list devices booted
+    - appium --address 127.0.0.1 --port 4723 > appium.log 2>&1 &
+    - for attempt in $(seq 1 30); do curl --fail --silent http://127.0.0.1:4723/status && break || sleep 2; done
+  script:
+    - PLATFORM=ios npm run test:ios
+  after_script:
+    - if [ -d allure-results ]; then npm run report:allure || true; fi
+  artifacts:
+    when: always
+    expire_in: 14 days
+    paths:
+      - allure-results/
+      - allure-report/
+      - artifacts/screenshots/
+      - appium.log
