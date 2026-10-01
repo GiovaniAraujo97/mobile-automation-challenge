@@ -13,7 +13,6 @@ android:e2e:
   before_script:
     - npm ci
     - npm run apps:download
-    - npx appium driver install uiautomator2
     - adb wait-for-device
     - appium --address 127.0.0.1 --port 4723 > appium.log 2>&1 &
     - for attempt in $(seq 1 30); do curl --fail --silent http://127.0.0.1:4723/status && break || sleep 2; done

@@ -36,9 +36,6 @@ jobs:
       - name: Download demo apps
         run: npm run apps:download
 
-      - name: Install Appium Android driver
-        run: npx appium driver install uiautomator2
-
       - name: Run Android E2E tests
         uses: reactivecircus/android-emulator-runner@v2
         with:

@@ -7,7 +7,7 @@ Automação de testes mobile do [WebdriverIO Native Demo App](https://github.com
 - Node.js 20.19.0 ou superior e npm (mínimo exigido pelo Appium 3.8 e suas dependências)
 - Git
 - Java 17 ou superior, necessário pelo Appium/Android tooling e para gerar o HTML Allure
-- Android: Android Studio, Android SDK, `adb`, um AVD inicializado e driver UiAutomator2 do Appium
+- Android: Android Studio, Android SDK, `adb` e um AVD inicializado. O UiAutomator2 já está nas dependências do projeto e é instalado por `npm ci`.
 - iOS: macOS, Xcode, Command Line Tools, um simulador inicializado e driver XCUITest do Appium. O app demo não pode ser instalado em iPhone físico.
 
 Os dez cenários Android foram executados em um emulador local e passaram. A execução iOS e a pipeline hospedada no GitLab ainda dependem de um Mac e dos runners configurados para o projeto. O BrowserStack é opcional e não está habilitado.
@@ -23,13 +23,7 @@ npm run apps:download
 
 O script baixa os binários oficiais da release 2.2.0 para `apps/`: APK para Android e pacote `.zip` do app para simulador iOS. Os binários são ignorados pelo Git e baixados novamente no CI.
 
-Instale o driver da plataforma desejada:
-
-```powershell
-npx appium driver install uiautomator2
-```
-
-Em macOS para iOS:
+O driver Android UiAutomator2 é instalado junto com as dependências. Para iOS, instale o XCUITest no macOS:
 
 ```bash
 npx appium driver install xcuitest
