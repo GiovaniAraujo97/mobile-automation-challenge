@@ -88,7 +88,8 @@ Os seletores preferem os IDs de acessibilidade providos pelo próprio app demo. 
 
 - Android: 10 cenários aprovados no emulador local com `npm run test:android`.
 - iOS: configuração presente; execução ainda não validada, pois requer macOS e Xcode.
-- GitLab CI: pipeline configurada para push e merge request; a execução depende de runners próprios com as tags `mobile-android` e `mobile-macos`.
+- GitHub Actions: workflow Android executa em push, pull request e manualmente; resultados, relatório Allure, screenshots e log do Appium são publicados como artefatos por 14 dias.
+- GitLab CI: configuração Android e iOS disponível em `.gitlab-ci.yml`; a execução depende de runners próprios com as tags `mobile-android` e `mobile-macos`.
 - BrowserStack: integração opcional não configurada; requer conta e credenciais próprias.
 
 ## Evidências e Allure
@@ -108,9 +109,11 @@ npm run report:allure
 allure open allure-report
 ```
 
-## GitLab CI/CD
+## CI/CD
 
-`.gitlab-ci.yml` executa os testes em push e merge request e publica o relatório Allure, os resultados, screenshots e log do Appium como artefatos por 14 dias.
+No GitHub, `.github/workflows/android.yml` executa os testes Android em push para `main`, pull request para `main` e também pode ser iniciada manualmente pela aba **Actions**. A workflow prepara um emulador, inicia o Appium, roda os dez cenários e publica os resultados e o relatório Allure como artefatos por 14 dias.
+
+`.gitlab-ci.yml` também mantém a configuração GitLab para Android e iOS, publicando o relatório Allure, screenshots e log do Appium como artefatos por 14 dias.
 
 O projeto precisa de runners GitLab próprios com estas tags:
 
